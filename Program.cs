@@ -15,14 +15,26 @@ static async Task Forcast()
     var weatherData = JsonSerializer.Deserialize<WeatherResponse>(content);
 
     if (response.IsSuccessStatusCode)
-    // This was originally a for loop that printed both the date and the high, but I changed it to adhere better to the assignment
+    
     {
-        //for (int i = 0; i < weatherData!.daily.time.Length; i++)
-        foreach (float highTemp in weatherData!.daily.temperature_2m_max)
+        for (int i = 0; i < weatherData!.daily.time.Length; i++)
+        
         {
-            //string date = weatherData!.daily.time[i];
-            //float highTemp = weatherData!.daily.temperature_2m_max[i];
-            Console.WriteLine($"High: {highTemp}°F");
+            string date = weatherData!.daily.time[i];
+            float highTemp = weatherData!.daily.temperature_2m_max[i];
+            
+            if (highTemp < 60)
+            {
+                Console.WriteLine($"On {date} the High will be: {highTemp}°F - Bring a Coat!");
+            }
+            else if (highTemp > 90)
+            {
+                Console.WriteLine($"On {date} the High will be: {highTemp}°F - Bring a water!");
+            }
+            else
+            {
+                Console.WriteLine($"On {date} the High will be: {highTemp}°F");
+            }
         }
     }
 
