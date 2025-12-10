@@ -4,7 +4,12 @@ WeatherAPI weatherCall = new WeatherAPI();
 
 Console.WriteLine("Enter a 5 digit US Zipcode for Weather Data -");
 string zipInput = Console.ReadLine() ?? "";
-int.Parse(zipInput);
+
+while (zipInput.Length != 5 || !int.TryParse(zipInput, out _))
+{
+    Console.WriteLine("Invalid Zipcode Entered. Please enter a 5 digit US Zipcode.");
+    zipInput = Console.ReadLine() ?? "";
+}
 
 var location = await weatherCall.GetLocationAsync(zipInput);
 
@@ -14,6 +19,9 @@ if (location != null && location.results != null)
     float lon = location.results[0].longitude;
 
     var weatherData = await weatherCall.GetForecastAsync(lat, lon);
+    string locationName = location.results[0].name;
+    Console.WriteLine($"The High Temperature forecast for {locationName} is:");
+
     if (weatherData != null)
     {
         for (int i = 0; i < weatherData!.daily.time.Length; i++)
