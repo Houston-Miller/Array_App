@@ -1,27 +1,33 @@
-﻿
-using System.Text.Json;
+﻿using System.Text.Json;
 
-Console.WriteLine("Fetching weather data for the next 7 days - Louisville, KY:");
-await Forcast();
+WeatherAPI weatherCall = new WeatherAPI();
 
-static async Task Forcast()
+Console.WriteLine("Enter a 5 digit US Zipcode for Weather Data -");
+string zipInput = Console.ReadLine() ?? "";
+
+while (zipInput.Length != 5 || !int.TryParse(zipInput, out _))
 {
-    string url = "https://api.open-meteo.com/v1/forecast?latitude=38.2542&longitude=-85.7594&daily=temperature_2m_max&timezone=America%2FNew_York&temperature_unit=fahrenheit";
-    using HttpClient client = new HttpClient();
+    Console.WriteLine("Invalid Zipcode Entered. Please enter a 5 digit US Zipcode.");
+    zipInput = Console.ReadLine() ?? "";
+}
 
-    var response = await client.GetAsync(url);
+var location = await weatherCall.GetLocationAsync(zipInput);
 
-    var content = await response.Content.ReadAsStringAsync();
-    var weatherData = JsonSerializer.Deserialize<WeatherResponse>(content);
+if (location != null && location.results != null)
+{
+    float lat = location.results[0].latitude;
+    float lon = location.results[0].longitude;
 
-    if (response.IsSuccessStatusCode)
-    
+    var weatherData = await weatherCall.GetForecastAsync(lat, lon);
+    string locationName = location.results[0].name;
+    Console.WriteLine($"The High Temperature forecast for {locationName} is:");
+
+    if (weatherData != null)
     {
         for (int i = 0; i < weatherData!.daily.time.Length; i++)
-        
         {
-            string date = weatherData!.daily.time[i];
-            float highTemp = weatherData!.daily.temperature_2m_max[i];
+            string date = weatherData.daily.time[i];
+            float highTemp = weatherData.daily.temperature_2m_max[i];
             
             if (highTemp < 60)
             {
@@ -36,10 +42,5 @@ static async Task Forcast()
                 Console.WriteLine($"On {date} the High will be: {highTemp}°F");
             }
         }
-    }
-
-    else
-    {
-        Console.WriteLine("Error fetching weather data: " + response.StatusCode);
     }
 }
