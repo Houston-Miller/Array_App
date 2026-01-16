@@ -17,7 +17,7 @@ public class WeatherAPI
 
     public async Task<WeatherResponse?> GetForecastAsync(float lat, float lon)
     {
-        string url = $"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=temperature_2m_max&timezone=America%2FNew_York&temperature_unit=fahrenheit";
+        string url = $"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=temperature_2m_max,precipitation_probability_mean&timezone=America%2FNew_York&temperature_unit=fahrenheit";
         using HttpClient client = new HttpClient();
 
         var response = await client.GetAsync(url);

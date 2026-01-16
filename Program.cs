@@ -28,18 +28,19 @@ if (location != null && location.results != null)
         {
             string date = weatherData.daily.time[i];
             float highTemp = weatherData.daily.temperature_2m_max[i];
+            float rainChance = weatherData.daily.precipitation_probability_mean[i];
             
             if (highTemp < 60)
             {
-                Console.WriteLine($"On {date} the High will be: {highTemp}°F - Bring a Coat!");
+                Console.WriteLine($"On {date} the High will be: {highTemp}°F with a {rainChance}% chance of precipitation - Bring a Coat!");
             }
             else if (highTemp > 90)
             {
-                Console.WriteLine($"On {date} the High will be: {highTemp}°F - Bring a water!");
+                Console.WriteLine($"On {date} the High will be: {highTemp}°F with a {rainChance}% chance of precipitation - Bring a water!");
             }
             else
             {
-                Console.WriteLine($"On {date} the High will be: {highTemp}°F");
+                Console.WriteLine($"On {date} the High will be: {highTemp}°F with a {rainChance}% chance of precipitation");
             }
         }
     }
