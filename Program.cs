@@ -24,9 +24,10 @@ if (location != null && location.results != null)
 
     if (weatherData != null)
     {
-        for (int i = 0; i < weatherData!.daily.time.Length; i++)
+        for (int i = 0; i < weatherData!.daily.time.Count; i++)
         {
-            string date = weatherData.daily.time[i];
+            DateOnly dateObj = weatherData.daily.time[i];
+            string date = dateObj.ToLongDateString();
             float highTemp = weatherData.daily.temperature_2m_max[i];
             float rainChance = weatherData.daily.precipitation_probability_mean[i];
             WeatherType todayWeather = weatherData.daily.weather_code[i]; 

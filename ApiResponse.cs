@@ -1,7 +1,7 @@
-public record DailyData(string[] time, 
-    float[] temperature_2m_max, 
-    float[] precipitation_probability_mean, 
-    WeatherType[] weather_code);
+public record DailyData(List<DateOnly> time, 
+    List<float> temperature_2m_max, 
+    List<float> precipitation_probability_mean, 
+    List<WeatherType> weather_code);
 public record WeatherResponse(DailyData daily);
 public record LocationData(string name, float latitude, float longitude);
 public record GeoResponse(LocationData[] results);
